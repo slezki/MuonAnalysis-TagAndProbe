@@ -456,10 +456,11 @@ if False:
 
 if True: 
     process.tracksNoMuonSeeded = cms.EDFilter("TrackSelector",
-      src = cms.InputTag("generalTracks"),
-      cut = cms.string(" || ".join("isAlgoInMask('%s')" % a for a in [
-                    'initialStep', 'lowPtTripletStep', 'pixelPairStep', 'detachedTripletStep',
-                    'mixedTripletStep', 'pixelLessStep', 'tobTecStep', 'jetCoreRegionalStep' ] ) )
+              src = cms.InputTag("generalTracks"),
+              cut = cms.string(" || ".join("isAlgoInMask('%s')" % a for a in [
+              'initialStep', 'lowPtTripletStep', 'pixelPairStep', 'detachedTripletStep',
+              'mixedTripletStep', 'pixelLessStep', 'tobTecStep', 'jetCoreRegionalStep',
+              'lowPtQuadStep', 'highPtTripletStep', 'detachedQuadStep' ] ) )
     )
     process.pCutTracks0 = process.pCutTracks.clone(src = 'tracksNoMuonSeeded')
     process.tkTracks0 = process.tkTracks.clone(src = 'pCutTracks0')
