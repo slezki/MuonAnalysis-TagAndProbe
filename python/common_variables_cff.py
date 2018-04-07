@@ -356,6 +356,7 @@ LowPtTriggerFlagsPhysics = cms.PSet(
                                         "(triggerObjectMatchesByCollection('hltL2MuonCandidates').at(0).hasFilterLabel('hltL2fL1sL1DoubleMu0er16ORL1DoubleMu10MuOpenL1f0L2PreFiltered0') || "+
                                         " triggerObjectMatchesByCollection('hltL2MuonCandidates').at(0).hasFilterLabel('hltL2fL1sL1DoubleMu0er16IorDoubleMu0er16OSIorL1DoubleMu10MuOpenL1f0L2PreFiltered0'))"
                                         ),
+    #Mu3              = cms.string("!triggerObjectMatchesByPath('HLT_Mu3_v*').empty()"),
 
     ## L3 Mu
     Mu_L3 = cms.string(                 "!triggerObjectMatchesByCollection('hltIterL3MuonCandidates').empty()"
@@ -387,6 +388,14 @@ LowPtTriggerFlagsEfficienciesTag = cms.PSet(
                                    " triggerObjectMatchesByCollection('hltIterL3MuonCandidates').at(0).hasFilterLabel('hltMu7Track7JpsiTrackMassFiltered')"),
 
    ## 2015
+   #Mu3              = cms.string("!triggerObjectMatchesByPath('HLT_Mu3_v*').empty()"),
+
+   #Mu3 = cms.string("!triggerObjectMatchesByCollection('hltIterL3MuonCandidates').empty()" 
+   #                 ),
+   Mu3 = cms.string("!triggerObjectMatchesByCollection('hltL2MuonCandidates').empty() && " +
+                    " triggerObjectMatchesByCollection('hltL2MuonCandidates').at(0).hasFilterLabel('hltL2fL1sMu3L1f0L2Filtered0')"
+                    ),
+
    Mu7p5_MU = cms.string("!triggerObjectMatchesByCollection('hltIterL3MuonCandidates').empty() && " +
                          " triggerObjectMatchesByCollection('hltIterL3MuonCandidates').at(0).hasFilterLabel('hltL3fLMu7p5TrackL3Filtered7p5')"
                          ),
@@ -433,6 +442,14 @@ LowPtTriggerFlagsEfficienciesProbe = cms.PSet(
                                    " triggerObjectMatchesByCollection('hltMuTrackJpsiCtfTrackCands').at(0).hasFilterLabel('hltMu7Track7JpsiTrackMassFiltered')"),
 
    ## 2015
+   #Mu3_probe              = cms.string("!triggerObjectMatchesByPath('HLT_Mu3_v*').empty()"),
+
+   #Mu3_probe = cms.string("!triggerObjectMatchesByCollection('hltIterL3MuonCandidates').empty() "
+   #                 ),
+   Mu3_probe = cms.string("!triggerObjectMatchesByCollection('hltIterL3MuonCandidates').empty() && " +
+                    " triggerObjectMatchesByCollection('hltIterL3MuonCandidates').at(0).hasFilterLabel('hltL3fL1sMu3L1f0L2f0L3Filtered3')"
+                    ),
+
    Mu7p5_Track2_Jpsi_TK = cms.string("!triggerObjectMatchesByCollection('hltTracksIter').empty() && " +
                                      " triggerObjectMatchesByCollection('hltTracksIter').at(0).hasFilterLabel('hltMu7p5Track2JpsiTrackMassFiltered')"),
    Mu7p5_Track3p5_Jpsi_TK = cms.string("!triggerObjectMatchesByCollection('hltTracksIter').empty() && " +

@@ -4,20 +4,28 @@ process = cms.Process("TagProbe")
 
 process.load('Configuration.StandardSequences.Services_cff')
 process.load('FWCore.MessageService.MessageLogger_cfi')
-process.options   = cms.untracked.PSet( wantSummary = cms.untracked.bool(True) )
-process.MessageLogger.cerr.FwkReport.reportEvery = 1000
+process.options   = cms.untracked.PSet( 
+    #SkipEvent = cms.untracked.vstring('ProductNotFound'),
+    wantSummary = cms.untracked.bool(True) 
+)
+process.MessageLogger.cerr.FwkReport.reportEvery = 10
 
-process.source = cms.Source("PoolSource", 
+
+process.source = cms.Source("PoolSource",
     fileNames = cms.untracked.vstring(),
 )
-process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(-1) )    
+
+process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(10000) )    
+
 
 process.load('Configuration.StandardSequences.GeometryRecoDB_cff')
 process.load('Configuration.StandardSequences.MagneticField_cff')
 process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_condDBv2_cff')
 process.load("Configuration.StandardSequences.Reconstruction_cff")
+#process.load('HLTrigger.Configuration.HLT_Effcy_cff')
 
 # process.Tracer = cms.Service('Tracer')
+
 import os
 if "CMSSW_7_6_" in os.environ['CMSSW_VERSION']:
     process.GlobalTag.globaltag = cms.string('76X_dataRun2_v15')
@@ -51,10 +59,131 @@ elif "CMSSW_8_0_" in os.environ['CMSSW_VERSION']:
     import FWCore.PythonUtilities.LumiList as LumiList
     json = '/afs/cern.ch/cms/CAF/CMSCOMM/COMM_DQM/certification/Collisions16/13TeV/ReReco/Final/Cert_271036-284044_13TeV_23Sep2016ReReco_Collisions16_JSON.txt'
     process.source.lumisToProcess = LumiList.LumiList(filename = json).getVLuminosityBlockRange()
+elif "CMSSW_10_0_" in os.environ['CMSSW_VERSION']:
+    process.GlobalTag.globaltag = cms.string('100X_dataRun2_relval_ForTSG_v1')
+    process.source.fileNames = [
+        'root://eoscms//eos/cms/store/group/phys_bphys/fiorendi/13TeV/data2017/Charmonium/crab_skim_Mu7p5_TrackX/180323_140349/0000/skim_1.root',
+        'root://eoscms//eos/cms/store/group/phys_bphys/fiorendi/13TeV/data2017/Charmonium/crab_skim_Mu7p5_TrackX/180323_140349/0000/skim_2.root',
+        'root://eoscms//eos/cms/store/group/phys_bphys/fiorendi/13TeV/data2017/Charmonium/crab_skim_Mu7p5_TrackX/180323_140349/0000/skim_3.root',
+        'root://eoscms//eos/cms/store/group/phys_bphys/fiorendi/13TeV/data2017/Charmonium/crab_skim_Mu7p5_TrackX/180323_140349/0000/skim_4.root',
+        'root://eoscms//eos/cms/store/group/phys_bphys/fiorendi/13TeV/data2017/Charmonium/crab_skim_Mu7p5_TrackX/180323_140349/0000/skim_5.root',
+        'root://eoscms//eos/cms/store/group/phys_bphys/fiorendi/13TeV/data2017/Charmonium/crab_skim_Mu7p5_TrackX/180323_140349/0000/skim_6.root',
+        'root://eoscms//eos/cms/store/group/phys_bphys/fiorendi/13TeV/data2017/Charmonium/crab_skim_Mu7p5_TrackX/180323_140349/0000/skim_7.root',
 
+        #'/store/data/Run2017E/Charmonium/AOD/17Nov2017-v1/60000/90C4F902-C5EB-E711-9A7F-0242AC1C0500.root',
+        #'/store/data/Run2017E/Charmonium/AOD/17Nov2017-v1/60000/4C1DBF2E-C4EB-E711-BEDB-0242AC1C0500.root',
+        #'/store/data/Run2017E/Charmonium/AOD/17Nov2017-v1/60000/2EB6F26B-CEEB-E711-B7A4-0242AC1C0503.root',
+        #'/store/data/Run2017E/Charmonium/AOD/17Nov2017-v1/60000/34F78254-CDEB-E711-87CE-0242AC1C0501.root',
+        #'/store/data/Run2017E/Charmonium/AOD/17Nov2017-v1/60000/CEBCF487-D2EB-E711-A50D-0242AC1C0501.root',
+        #'/store/data/Run2017E/Charmonium/AOD/17Nov2017-v1/60000/64895734-0BEC-E711-ADA2-0242AC1C0500.root',
+        #'/store/data/Run2017E/Charmonium/AOD/17Nov2017-v1/60000/D4C260E4-11EC-E711-8A6F-0242AC1C0500.root',
+        #'/store/data/Run2017E/Charmonium/AOD/17Nov2017-v1/60000/8E8F87C4-1AEC-E711-B183-0242AC1C0503.root',
+        #'/store/data/Run2017E/Charmonium/AOD/17Nov2017-v1/60000/0A61E009-1BEC-E711-B1BC-0242AC1C0501.root',
+        #'/store/data/Run2017E/Charmonium/AOD/17Nov2017-v1/60000/200D6CE1-45EC-E711-8E22-0242AC1C0500.root',
+        #'/store/data/Run2017E/Charmonium/AOD/17Nov2017-v1/60000/D63543D0-55EC-E711-83A2-0242AC1C0500.root',
+        #'/store/data/Run2017E/Charmonium/AOD/17Nov2017-v1/60000/24F89A3A-4DEB-E711-8A69-0CC47A545060.root',
+        #'/store/data/Run2017E/Charmonium/AOD/17Nov2017-v1/60000/D25F2679-17EC-E711-80AC-0CC47A166D66.root',
+        #'/store/data/Run2017E/Charmonium/AOD/17Nov2017-v1/60000/BA72E421-56EC-E711-9567-0242AC1C0500.root',
+        #'/store/data/Run2017E/Charmonium/AOD/17Nov2017-v1/60000/E036BF2B-CEEB-E711-884E-0242AC1C0500.root',
+        #'/store/data/Run2017E/Charmonium/AOD/17Nov2017-v1/60000/8439F870-D6EB-E711-A7CE-0242AC1C0503.root',
+        #'/store/data/Run2017E/Charmonium/AOD/17Nov2017-v1/60000/EE708871-D6EB-E711-A505-0242AC1C0502.root',
+        #'/store/data/Run2017E/Charmonium/AOD/17Nov2017-v1/60000/D6ACBF7A-D6EB-E711-83ED-0242AC1C0500.root',
+        #'/store/data/Run2017E/Charmonium/AOD/17Nov2017-v1/60000/605A9307-0CEC-E711-97D6-0242AC1C0501.root',
+        #'/store/data/Run2017E/Charmonium/AOD/17Nov2017-v1/60000/E22C934F-0BEC-E711-932B-0242AC1C0500.root',
+        #'/store/data/Run2017E/Charmonium/AOD/17Nov2017-v1/60000/EEFE0B56-12EC-E711-842B-0242AC1C0500.root',
+        #'/store/data/Run2017E/Charmonium/AOD/17Nov2017-v1/60000/A6AACBB6-10EC-E711-9F2A-0242AC1C0501.root',
+        #'/store/data/Run2017E/Charmonium/AOD/17Nov2017-v1/60000/C427FC5A-46EC-E711-B3DE-0242AC1C0502.root',
+        #'/store/data/Run2017E/Charmonium/AOD/17Nov2017-v1/60000/AA694811-44EC-E711-AF45-0242AC1C0500.root',
+        #'/store/data/Run2017E/Charmonium/AOD/17Nov2017-v1/60000/660A32A1-9BEB-E711-9FA7-003048C6B51A.root',
+        #'/store/data/Run2017E/Charmonium/AOD/17Nov2017-v1/60000/5E40482F-E2EB-E711-BEBA-0CC47AE0F33A.root',
+        #'/store/data/Run2017E/Charmonium/AOD/17Nov2017-v1/60000/14A46CD2-32EC-E711-A24E-C4346BC84780.root',
+        #'/store/data/Run2017E/Charmonium/AOD/17Nov2017-v1/60000/0E6CC526-9CEB-E711-B6A8-001E67F67372.root',
+        #'/store/data/Run2017E/Charmonium/AOD/17Nov2017-v1/60000/6E9327D8-32EC-E711-A682-008CFAF7455E.root',
+        #'/store/data/Run2017E/Charmonium/AOD/17Nov2017-v1/60001/0C5262C4-A4EC-E711-9678-7845C4FC3638.root',
+        #'/store/data/Run2017E/Charmonium/AOD/17Nov2017-v1/60001/D6900D2E-E6EC-E711-A967-0242AC1C0500.root',
+        #'/store/data/Run2017E/Charmonium/AOD/17Nov2017-v1/60000/1EF3296F-C6EB-E711-BDA8-0242AC1C0502.root',
+        #'/store/data/Run2017E/Charmonium/AOD/17Nov2017-v1/60000/F4A2A4E1-D5EB-E711-AD75-0242AC1C0500.root',
+        #'/store/data/Run2017E/Charmonium/AOD/17Nov2017-v1/60000/F0993B01-DCEB-E711-8C05-0242AC1C0500.root',
+        #'/store/data/Run2017E/Charmonium/AOD/17Nov2017-v1/60000/C68E4F7E-E4EB-E711-B7A1-0242AC1C0501.root',
+        #'/store/data/Run2017E/Charmonium/AOD/17Nov2017-v1/60000/D4BF2BCC-0CEC-E711-AD4B-0242AC1C0500.root',
+        #'/store/data/Run2017E/Charmonium/AOD/17Nov2017-v1/60000/A6A7A353-12EC-E711-AED9-0242AC1C0500.root',
+        #'/store/data/Run2017E/Charmonium/AOD/17Nov2017-v1/60000/88576753-12EC-E711-8FEC-0242AC1C0500.root',
+        #'/store/data/Run2017E/Charmonium/AOD/17Nov2017-v1/60000/58D74C52-10EC-E711-BD4B-0242AC1C0501.root',
+        #'/store/data/Run2017E/Charmonium/AOD/17Nov2017-v1/60000/6C3D67EA-10EC-E711-9F72-0242AC1C0500.root',
+        #'/store/data/Run2017E/Charmonium/AOD/17Nov2017-v1/60000/A0F2135B-46EC-E711-AD12-0242AC1C0502.root',
+        #'/store/data/Run2017E/Charmonium/AOD/17Nov2017-v1/60000/82405FDA-32EC-E711-82D9-7CD30AD09DD2.root',
+        #'/store/data/Run2017E/Charmonium/AOD/17Nov2017-v1/60000/06BAC455-CDEB-E711-BC9C-0242AC1C0500.root',
+        #'/store/data/Run2017E/Charmonium/AOD/17Nov2017-v1/60000/3233B87F-DDEB-E711-A905-0242AC1C0500.root',
+        #'/store/data/Run2017E/Charmonium/AOD/17Nov2017-v1/60000/52557D6D-01EC-E711-9DE3-0242AC1C0501.root',
+        #'/store/data/Run2017E/Charmonium/AOD/17Nov2017-v1/60000/7C178500-0CEC-E711-BE42-0242AC1C0501.root',
+        #'/store/data/Run2017E/Charmonium/AOD/17Nov2017-v1/60000/EA22D25C-0CEC-E711-A1D9-0242AC1C0500.root',
+        #'/store/data/Run2017E/Charmonium/AOD/17Nov2017-v1/60000/48DB7278-0CEC-E711-960A-0242AC1C0503.root',
+        #'/store/data/Run2017E/Charmonium/AOD/17Nov2017-v1/60000/8CF10032-10EC-E711-8113-0242AC1C0500.root',
+        #'/store/data/Run2017E/Charmonium/AOD/17Nov2017-v1/60000/042CB0AE-9BEB-E711-AF44-0CC47A166D66.root',
+        #'/store/data/Run2017E/Charmonium/AOD/17Nov2017-v1/60001/10BD40DB-5EEC-E711-B865-0242AC1C0502.root',
+        #'/store/data/Run2017E/Charmonium/AOD/17Nov2017-v1/60001/4EE3D535-60EC-E711-8FFA-0242AC1C0500.root',
+        #'/store/data/Run2017E/Charmonium/AOD/17Nov2017-v1/60000/66CEDF4B-0BEC-E711-A9EB-0242AC1C0500.root',
+        #'/store/data/Run2017E/Charmonium/AOD/17Nov2017-v1/60000/5C1C0EC0-10EC-E711-8E1D-0242AC1C0500.root',
+        #'/store/data/Run2017E/Charmonium/AOD/17Nov2017-v1/60000/424A6F3B-1BEC-E711-BEDB-0242AC1C0500.root',
+        #'/store/data/Run2017E/Charmonium/AOD/17Nov2017-v1/60000/3A99C54D-1BEC-E711-9130-0242AC1C0500.root',
+        #'/store/data/Run2017E/Charmonium/AOD/17Nov2017-v1/60000/866B1095-24EC-E711-8BE5-0242AC1C0500.root',
+        #'/store/data/Run2017E/Charmonium/AOD/17Nov2017-v1/60000/36175C0F-44EC-E711-8718-0242AC1C0500.root',
+        #'/store/data/Run2017E/Charmonium/AOD/17Nov2017-v1/60000/36DD5B15-46EC-E711-980F-0242AC1C0500.root',
+        #'/store/data/Run2017E/Charmonium/AOD/17Nov2017-v1/60001/A8DFD822-56EC-E711-81EA-0242AC1C0500.root',
+        #'/store/data/Run2017E/Charmonium/AOD/17Nov2017-v1/60000/74599962-56EC-E711-BFB7-0242AC1C0501.root',
+        #'/store/data/Run2017E/Charmonium/AOD/17Nov2017-v1/60000/B44FC13C-56EB-E711-B584-0CC47A5450DA.root',
+        #'/store/data/Run2017E/Charmonium/AOD/17Nov2017-v1/60000/9ADFE057-CDEB-E711-8BD6-0242AC1C0501.root',
+        #'/store/data/Run2017E/Charmonium/AOD/17Nov2017-v1/60000/92BEE513-D6EB-E711-8F24-0242AC1C0500.root',
+        #'/store/data/Run2017E/Charmonium/AOD/17Nov2017-v1/60000/86AC3D61-12EC-E711-B1C5-0242AC1C0500.root',
+        #'/store/data/Run2017E/Charmonium/AOD/17Nov2017-v1/60000/C26B96DE-45EC-E711-A5D5-0242AC1C0500.root',
+        #'/store/data/Run2017E/Charmonium/AOD/17Nov2017-v1/60000/FEC90035-45EC-E711-B39B-0242AC1C0501.root',
+        #'/store/data/Run2017E/Charmonium/AOD/17Nov2017-v1/60000/044A0E12-43EC-E711-8D0F-0242AC1C0500.root',
+        #'/store/data/Run2017E/Charmonium/AOD/17Nov2017-v1/60000/E8500C7E-43EC-E711-8E8C-0242AC1C0502.root',
+        #'/store/data/Run2017E/Charmonium/AOD/17Nov2017-v1/60000/101FD332-45EC-E711-977B-0242AC1C0502.root',
+        #'/store/data/Run2017E/Charmonium/AOD/17Nov2017-v1/60001/D833394C-57EC-E711-B2A4-0242AC1C0502.root',
+        #'/store/data/Run2017E/Charmonium/AOD/17Nov2017-v1/60000/BCDD9FFE-55EC-E711-A1E5-0242AC1C0501.root',
+        #'/store/data/Run2017E/Charmonium/AOD/17Nov2017-v1/60000/EAE15942-DBEB-E711-BA27-0CC47AE0F33A.root',
+        #'/store/data/Run2017E/Charmonium/AOD/17Nov2017-v1/60001/2648ABCA-5EEC-E711-9372-0242AC1C0500.root',
+        #'/store/data/Run2017E/Charmonium/AOD/17Nov2017-v1/60000/18B2C069-D1EB-E711-8086-0242AC1C0501.root',
+        #'/store/data/Run2017E/Charmonium/AOD/17Nov2017-v1/60000/1ECB494B-01EC-E711-8897-0242AC1C0500.root',
+        #'/store/data/Run2017E/Charmonium/AOD/17Nov2017-v1/60000/F09C1728-12EC-E711-9C7D-0242AC1C0500.root',
+        #'/store/data/Run2017E/Charmonium/AOD/17Nov2017-v1/60000/4C899BAD-10EC-E711-8E73-0242AC1C0500.root',
+        #'/store/data/Run2017E/Charmonium/AOD/17Nov2017-v1/60000/E0084C10-44EC-E711-B472-0242AC1C0501.root',
+        #'/store/data/Run2017E/Charmonium/AOD/17Nov2017-v1/60000/F287F7EE-55EC-E711-8FD6-0242AC1C0501.root',
+        #'/store/data/Run2017E/Charmonium/AOD/17Nov2017-v1/60000/DAC8EBD6-55EC-E711-B757-0242AC1C0500.root',
+        #'/store/data/Run2017E/Charmonium/AOD/17Nov2017-v1/60000/0CE2F8D8-55EC-E711-A068-0242AC1C0500.root',
+        #'/store/data/Run2017E/Charmonium/AOD/17Nov2017-v1/60000/EA627B92-B1EB-E711-B07A-B4E10FD21863.root',
+        #'/store/data/Run2017E/Charmonium/AOD/17Nov2017-v1/60000/C888C21F-33EC-E711-A51A-008CFAFBDE0C.root',
+        #'/store/data/Run2017E/Charmonium/AOD/17Nov2017-v1/60000/286320D8-32EC-E711-9ABD-7CD30AD09010.root',
+
+        #'/store/data/Run2017E/Charmonium/AOD/PromptReco-v1/000/304/777/00000/EE4F78E1-5FB0-E711-90A3-02163E014585.root',
+        #'/store/data/Run2017E/Charmonium/AOD/PromptReco-v1/000/304/777/00000/60DEC355-45B0-E711-BBC5-02163E01459D.root',
+        #'/store/data/Run2017E/Charmonium/AOD/PromptReco-v1/000/304/777/00000/C656433D-46B0-E711-996C-02163E01341E.root',
+        #'/store/data/Run2017E/Charmonium/AOD/PromptReco-v1/000/304/777/00000/800245A2-47B0-E711-93C7-02163E0141D6.root',
+        #'/store/data/Run2017E/Charmonium/AOD/PromptReco-v1/000/304/777/00000/408ED252-45B0-E711-9E9E-02163E014705.root',
+        #'/store/data/Run2017E/Charmonium/AOD/PromptReco-v1/000/304/777/00000/6C7A183F-46B0-E711-B6B7-02163E012611.root',
+        #'/store/data/Run2017E/Charmonium/AOD/PromptReco-v1/000/304/777/00000/DE9D77F9-46B0-E711-8048-02163E01A67E.root',
+        #'/store/data/Run2017E/Charmonium/AOD/PromptReco-v1/000/304/777/00000/CCF7EC41-46B0-E711-9E8E-02163E01A331.root',
+        #'/store/data/Run2017E/Charmonium/AOD/PromptReco-v1/000/304/777/00000/28CF33A0-9AB0-E711-AD2B-02163E01462C.root',
+        #'/store/data/Run2017E/Charmonium/AOD/PromptReco-v1/000/304/777/00000/C6B7C10C-47B0-E711-9BFB-02163E01A61B.root',
+        #'/store/data/Run2017E/Charmonium/AOD/PromptReco-v1/000/304/777/00000/CC1F3107-47B0-E711-A425-02163E019CE6.root',
+        #'/store/data/Run2017E/Charmonium/AOD/PromptReco-v1/000/304/777/00000/8437C608-BDB0-E711-A8E2-02163E01A6E2.root',
+        #'/store/data/Run2017E/Charmonium/AOD/PromptReco-v1/000/304/777/00000/189A4613-46B0-E711-94DB-02163E01465A.root',
+        #'/store/data/Run2017E/Charmonium/AOD/PromptReco-v1/000/304/777/00000/CCE0AAA8-47B0-E711-9F43-02163E01231F.root',
+        #'/store/data/Run2017E/Charmonium/AOD/PromptReco-v1/000/304/777/00000/44AB37DA-46B0-E711-B880-02163E01366D.root',
+        #'/store/data/Run2017E/Charmonium/AOD/PromptReco-v1/000/304/777/00000/2AF825D1-47B0-E711-911D-02163E011FBE.root',
+        #'/store/data/Run2017E/Charmonium/AOD/PromptReco-v1/000/304/777/00000/2A1C77FD-46B0-E711-BD27-02163E013521.root',
+        #'/store/data/Run2017E/Charmonium/AOD/PromptReco-v1/000/304/777/00000/90E986B9-47B0-E711-8AB5-02163E014355.root',
+        #'/store/data/Run2017E/Charmonium/AOD/PromptReco-v1/000/304/777/00000/4ED7515E-45B0-E711-80F0-02163E01375A.root',
+        #'/store/data/Run2017E/Charmonium/AOD/PromptReco-v1/000/304/777/00000/72406E59-46B0-E711-9BA6-02163E019DC4.root',
+
+        #'/store/data/Run2017E/HLTPhysics/AOD/PromptReco-v1/000/304/778/00000/B8E8FA7D-65B0-E711-A9E1-02163E014195.root'
+        #'/store/data/Run2017E/HLTPhysics/MINIAOD/PromptReco-v1/000/304/777/00000/0EF64D35-5CB0-E711-9056-02163E0142F3.root',
+        #'/store/data/Run2017E/HLTPhysics/MINIAOD/PromptReco-v1/000/304/777/00000/1E5146A6-69B0-E711-BE27-02163E0133A4.root',
+        #'/store/data/Run2017E/HLTPhysics/MINIAOD/PromptReco-v1/000/304/777/00000/3C0373C5-B1B0-E711-A901-02163E014206.root',
+    ]
+    print 'OK!'
 else: raise RuntimeError, "Unknown CMSSW version %s" % os.environ['CMSSW_VERSION']
-
-
 
 ## ==== Fast Filters ====
 process.goodVertexFilter = cms.EDFilter("VertexSelector",
@@ -73,9 +202,21 @@ process.load("HLTrigger.HLTfilters.triggerResultsFilter_cfi")
 process.triggerResultsFilter.triggerConditions = cms.vstring( 'HLT_Mu*_L2Mu*' )
 process.triggerResultsFilter.l1tResults = ''
 process.triggerResultsFilter.throw = True
-process.triggerResultsFilter.hltResults = cms.InputTag( "TriggerResults", "", "HLT" )
+#process.triggerResultsFilter.hltResults = cms.InputTag( "TriggerResults", "", "HLT" )
+process.triggerResultsFilter.hltResults = cms.InputTag( "TriggerResults", "", "HLT2" )
 process.HLTMu   = process.triggerResultsFilter.clone(triggerConditions = [ 'HLT_Mu*_L2Mu*' ])
-process.HLTBoth = process.triggerResultsFilter.clone(triggerConditions = [ 'HLT_Mu*_L2Mu*', 'HLT_Mu*_Track*_Jpsi*' ])
+#process.HLTBoth = process.triggerResultsFilter.clone(triggerConditions = [ 'HLT_Mu*_L2Mu*', 'HLT_Mu*_Track*_Jpsi*' ])
+#process.HLTBoth = process.triggerResultsFilter.clone(triggerConditions = [ 'HLT_DoubleMu4_JpsiTrk_Displaced_v*', 'HLT_DoubleMu4_Jpsi_Displaced_v*', 'HLT_Mu7p5_Track2_Jpsi_v*', 'HLT_Mu3*', 'HLT_Dimuon25_Jpsi_v*', 'HLT_Dimuon0_Jpsi_L1_4R_0er1p5R_v*' ])
+#process.HLTBoth = process.triggerResultsFilter.clone(triggerConditions = [ 'HLT_DoubleMu4_Jpsi*', 'HLT_Mu7p5_Track2_Jpsi*', 'HLT_Mu*_L2Mu*', 'HLT_Mu3*', 'HLT_Dimuon25_Jpsi*', 'HLT_Dimuon0_Jpsi_L1_4R_0er1p5R*' ])
+process.HLTBoth = process.triggerResultsFilter.clone(triggerConditions = [ 'HLT_DoubleMu4_Jpsi*', 'HLT_Mu7p5_Track2_Jpsi*', 'HLT_Mu3_v*', 'HLT_Dimuon25_Jpsi*', 'HLT_Dimuon0_Jpsi_L1_4R_0er1p5R*' ])
+#process.HLTBoth = process.triggerResultsFilter.clone(triggerConditions = ['HLT_Mu3_v*'])
+
+#HLT_DoubleMu4_JpsiTrk_Displaced_v*,
+#HLT_DoubleMu4_Jpsi_Displaced_v*,
+#HLT_Mu7p5_Track2_Jpsi_v*,
+#HLT_Mu3*,
+#HLT_Dimuon25_Jpsi_v*,
+#HLT_Dimuon0_Jpsi_L1_4R_0er1p5R_v*
 
 process.fastFilter = cms.Sequence(process.goodVertexFilter + process.noScraping)
 ## ==== Merge CaloMuons and Tracks into the collection of reco::Muons  ====
@@ -102,13 +243,12 @@ useL1Stage2Candidates(process)
 appendL1MatchingAlgo(process)
 #addHLTL1Passthrough(process)
 
-
 from MuonAnalysis.TagAndProbe.common_variables_cff import *
 process.load("MuonAnalysis.TagAndProbe.common_modules_cff")
 
 process.tagMuons = cms.EDFilter("PATMuonSelector",
     src = cms.InputTag("patMuonsWithTrigger"),
-    cut = cms.string("(isGlobalMuon || numberOfMatchedStations > 1) && pt > 5 && !triggerObjectMatchesByCollection('hltL3MuonCandidates').empty()"),
+    cut = cms.string("(isGlobalMuon || numberOfMatchedStations > 1) && pt > 5 && !triggerObjectMatchesByCollection('hltIterL3MuonCandidates').empty()"),
 )
 
 process.oneTag  = cms.EDFilter("CandViewCountFilter", src = cms.InputTag("tagMuons"), minNumber = cms.uint32(1))
@@ -201,13 +341,17 @@ process.tnpSimpleSequence = cms.Sequence(
     process.tpTree
 )
 
-process.tagAndProbe = cms.Path( 
+#process.tagAndProbe = cms.Path( 
+process.tagAndProbe = cms.EndPath( 
     process.HLTBoth    +
     process.fastFilter +
     process.mergedMuons                 *
     process.patMuonsWithTriggerSequence *
     process.tnpSimpleSequence
 )
+
+#tagAndProbe_ = process.tagAndProbe
+#print tagAndProbe_
 
 ##    _____               _    _             
 ##   |_   _| __ __ _  ___| | _(_)_ __   __ _ 
@@ -405,7 +549,7 @@ if False: # turn on for tracking efficiency using L1 seeds
 
 process.schedule = cms.Schedule(
    process.tagAndProbe,
-   process.tagAndProbeSta,
+   #process.tagAndProbeSta,
    #process.tagAndProbeTkL1
 )
 
@@ -414,4 +558,5 @@ process.RandomNumberGeneratorService.tkTracksNoJPsi0      = cms.PSet( initialSee
 process.RandomNumberGeneratorService.tkTracksNoBestJPsi  = cms.PSet( initialSeed = cms.untracked.uint32(81) )
 process.RandomNumberGeneratorService.tkTracksNoBestJPsi0  = cms.PSet( initialSeed = cms.untracked.uint32(81) )
 
+#process.TFileService = cms.Service("TFileService", fileName = cms.string("tnpJPsi_Data.root"))
 process.TFileService = cms.Service("TFileService", fileName = cms.string("tnpJPsi_Data.root"))
