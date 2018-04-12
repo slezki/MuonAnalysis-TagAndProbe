@@ -91,6 +91,7 @@ useL1Stage2Candidates(process)
 appendL1MatchingAlgo(process)
 #addHLTL1Passthrough(process)
 #changeTriggerProcessName(process, "*") # auto-guess
+changeTriggerProcessName(process, "HLT2", oldProcessName="HLT")
 
 from MuonAnalysis.TagAndProbe.common_variables_cff import *
 process.load("MuonAnalysis.TagAndProbe.common_modules_cff")
